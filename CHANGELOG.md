@@ -1,3 +1,8 @@
+Version 2.0.10 (2018/04/24)
+=================
+
+  * added angular as a dependency in bower.json
+
 Version 2.0.9 (2018/04/02)
 =================
 
