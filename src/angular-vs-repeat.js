@@ -61,6 +61,7 @@
    * Options shall be passed as an object to the `vs-repeat` attribute e.g.: `<div vs-repeat="{scrollParent: 'window', size: 20}"></div>`
    *
    * Available options:
+   * `debug` - show debug UI outlines and logs in the console
    * `horizontal` - stack repeated elements horizontally instead of vertically
    * `offset-before` - top/left offset in pixels (defaults to 0)
    * `offset-after` - bottom/right offset in pixels (defaults to 0)
@@ -182,7 +183,18 @@
     autoresize: false,
     hunked: false,
     hunkSize: 0,
+    debug: false
   };
+
+  const debugStyles = `
+    <style id="angular-vs-repeat-style">
+      .vs-repeat-debug-element {
+        top: 50%; left: 0; right: 0; height: 1px; background: red; z-index: 99999999; box-shadow: 0 0 20px red;
+      }
+      .vs-repeat-debug-element + .vs-repeat-debug-element {
+        display: none;
+      }
+    </style>`;
 
   const vsRepeatModule = angular.module('vs-repeat', []).directive('vsRepeat', ['$compile', '$parse', function($compile, $parse) {
     return {
@@ -266,6 +278,20 @@
             const scrollSize = options.horizontal ? 'scrollWidth' : 'scrollHeight';
             const scrollPos = options.horizontal ? 'scrollLeft' : 'scrollTop';
 
+            function setBeforeAndAfterStyles () {
+              const beforeStyle = $beforeContent[0].style;
+              const afterStyle = $afterContent[0].style;
+              const orientationProperty = options.horizontal ? 'height' : 'width';
+
+              [beforeStyle, afterStyle].forEach(elementStyle => {
+                elementStyle.setProperty('border', 'none', 'important');
+                elementStyle.setProperty('padding', '0', 'important');
+              });
+
+              beforeStyle.setProperty(orientationProperty, '100%');
+              afterStyle.setProperty(orientationProperty, '100%');
+            }
+
             $scope.vsRepeat.totalSize = 0;
 
             if ($scrollParent.length === 0) {
@@ -276,6 +302,7 @@
             $scope.vsRepeat.sizesCumulative = [];
 
             if (options.debug) {
+              angular.element(document.head).append(debugStyles);
               const $debugParent = options.scrollParent === 'window' ? angular.element(document.body) : $scrollParent;
               const $debug = angular.element('<div class="vs-repeat-debug-element"></div>');
               $debug.css('position', options.scrollParent === 'window' ? 'fixed' : 'absolute');
@@ -288,13 +315,7 @@
 
             let measuredSize = getClientSize($scrollParent[0], clientSize) || 50;
 
-            if (options.horizontal) {
-              $beforeContent.css('height', '100%');
-              $afterContent.css('height', '100%');
-            } else {
-              $beforeContent.css('width', '100%');
-              $afterContent.css('width', '100%');
-            }
+            setBeforeAndAfterStyles();
 
             if ($attrs.vsRepeatOptions) {
               $scope.$watchCollection($attrs.vsRepeatOptions, (newOpts) => {
@@ -645,6 +666,10 @@
             }
 
             function _warnMismatch() {
+              if (!options.debug) {
+                return;
+              }
+
               $scope.$$postDigest(() => {
                 window.requestAnimationFrame(() => {
                   const expectedSize = $scope.vsRepeat.sizesCumulative[originalLength];
@@ -665,30 +690,6 @@
       },
     };
   }]);
-
-  angular.element(document.head).append(
-    `<style id="angular-vs-repeat-style">
-	  	.vs-repeat-debug-element {
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: red;
-        z-index: 99999999;
-        box-shadow: 0 0 20px red;
-      }
-
-      .vs-repeat-debug-element + .vs-repeat-debug-element {
-        display: none;
-      }
-
-      .vs-repeat-before-content,
-      .vs-repeat-after-content {
-        border: none !important;
-        padding: 0 !important;
-      }
-    </style>`
-  );
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = vsRepeatModule.name;

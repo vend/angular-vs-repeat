@@ -62,6 +62,7 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
    * Options shall be passed as an object to the `vs-repeat` attribute e.g.: `<div vs-repeat="{scrollParent: 'window', size: 20}"></div>`
    *
    * Available options:
+   * `debug` - show debug UI outlines and logs in the console
    * `horizontal` - stack repeated elements horizontally instead of vertically
    * `offset-before` - top/left offset in pixels (defaults to 0)
    * `offset-after` - bottom/right offset in pixels (defaults to 0)
@@ -176,8 +177,10 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
     horizontal: false,
     autoresize: false,
     hunked: false,
-    hunkSize: 0
+    hunkSize: 0,
+    debug: false
   };
+  var debugStyles = "\n    <style id=\"angular-vs-repeat-style\">\n      .vs-repeat-debug-element {\n        top: 50%; left: 0; right: 0; height: 1px; background: red; z-index: 99999999; box-shadow: 0 0 20px red;\n      }\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n      }\n    </style>";
   var vsRepeatModule = angular.module('vs-repeat', []).directive('vsRepeat', ['$compile', '$parse', function ($compile, $parse) {
     return {
       restrict: 'A',
@@ -258,6 +261,19 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
             var offsetSize = options.horizontal ? 'offsetWidth' : 'offsetHeight';
             var scrollSize = options.horizontal ? 'scrollWidth' : 'scrollHeight';
             var scrollPos = options.horizontal ? 'scrollLeft' : 'scrollTop';
+
+            function setBeforeAndAfterStyles() {
+              var beforeStyle = $beforeContent[0].style;
+              var afterStyle = $afterContent[0].style;
+              var orientationProperty = options.horizontal ? 'height' : 'width';
+              [beforeStyle, afterStyle].forEach(function (elementStyle) {
+                elementStyle.setProperty('border', 'none', 'important');
+                elementStyle.setProperty('padding', '0', 'important');
+              });
+              beforeStyle.setProperty(orientationProperty, '100%');
+              afterStyle.setProperty(orientationProperty, '100%');
+            }
+
             $scope.vsRepeat.totalSize = 0;
 
             if ($scrollParent.length === 0) {
@@ -268,6 +284,7 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
             $scope.vsRepeat.sizesCumulative = [];
 
             if (options.debug) {
+              angular.element(document.head).append(debugStyles);
               var $debugParent = options.scrollParent === 'window' ? angular.element(document.body) : $scrollParent;
               var $debug = angular.element('<div class="vs-repeat-debug-element"></div>');
               $debug.css('position', options.scrollParent === 'window' ? 'fixed' : 'absolute');
@@ -278,14 +295,7 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
             }
 
             var measuredSize = getClientSize($scrollParent[0], clientSize) || 50;
-
-            if (options.horizontal) {
-              $beforeContent.css('height', '100%');
-              $afterContent.css('height', '100%');
-            } else {
-              $beforeContent.css('width', '100%');
-              $afterContent.css('width', '100%');
-            }
+            setBeforeAndAfterStyles();
 
             if ($attrs.vsRepeatOptions) {
               $scope.$watchCollection($attrs.vsRepeatOptions, function (newOpts) {
@@ -643,6 +653,10 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
             }
 
             function _warnMismatch() {
+              if (!options.debug) {
+                return;
+              }
+
               $scope.$$postDigest(function () {
                 window.requestAnimationFrame(function () {
                   var expectedSize = $scope.vsRepeat.sizesCumulative[originalLength];
@@ -663,7 +677,6 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
       }
     };
   }]);
-  angular.element(document.head).append("<style id=\"angular-vs-repeat-style\">\n\t  \t.vs-repeat-debug-element {\n        top: 50%;\n        left: 0;\n        right: 0;\n        height: 1px;\n        background: red;\n        z-index: 99999999;\n        box-shadow: 0 0 20px red;\n      }\n\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n      }\n\n      .vs-repeat-before-content,\n      .vs-repeat-after-content {\n        border: none !important;\n        padding: 0 !important;\n      }\n    </style>");
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = vsRepeatModule.name;
