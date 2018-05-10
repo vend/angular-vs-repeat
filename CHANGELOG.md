@@ -1,3 +1,9 @@
+Version 2.0.11 (2018/05/11)
+=================
+
+  * hide mismatch warnings if debug option is not enabled
+  * only append debug styles to head and only if debug option is enabled
+
 Version 2.0.10 (2018/04/24)
 =================
 
