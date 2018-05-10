@@ -180,7 +180,7 @@ function _slicedToArray(arr, i) { if (Array.isArray(arr)) { return arr; } else i
     hunkSize: 0,
     debug: false
   };
-  var debugStyles = "\n    <style id=\"angular-vs-repeat-style\">\n      .vs-repeat-debug-element {\n        top: 50%; left: 0; right: 0; height: 1px; background: red; z-index: 99999999; box-shadow: 0 0 20px red;\n      }\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n    }\n    </style>";
+  var debugStyles = "\n    <style id=\"angular-vs-repeat-style\">\n      .vs-repeat-debug-element {\n        top: 50%; left: 0; right: 0; height: 1px; background: red; z-index: 99999999; box-shadow: 0 0 20px red;\n      }\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n      }\n    </style>";
   var vsRepeatModule = angular.module('vs-repeat', []).directive('vsRepeat', ['$compile', '$parse', function ($compile, $parse) {
     return {
       restrict: 'A',

@@ -193,7 +193,7 @@
       }
       .vs-repeat-debug-element + .vs-repeat-debug-element {
         display: none;
-    }
+      }
     </style>`;
 
   const vsRepeatModule = angular.module('vs-repeat', []).directive('vsRepeat', ['$compile', '$parse', function($compile, $parse) {
