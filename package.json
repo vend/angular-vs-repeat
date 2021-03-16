@@ -1,7 +1,7 @@
 {
-  "name": "angular-vs-repeat",
+  "name": "@vend/angular-vs-repeat",
   "version": "2.0.11",
-  "description": "Virtual Scroll for AngularJS ngRepeat directive",
+  "description": "Virtual Scroll for AngularJS ngRepeat directive - Vend fork",
   "homepage": "http://kamilkp.github.io/angular-vs-repeat",
   "license": "MIT",
   "author": {
@@ -12,7 +12,7 @@
   "main": "dist/angular-vs-repeat.min.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kamilkp/angular-vs-repeat.git"
+    "url": "https://github.com/vend/angular-vs-repeat.git"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.40",
