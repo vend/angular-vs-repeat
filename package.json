@@ -44,5 +44,8 @@
     "unit": "gulp test",
     "build": "gulp build"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "overrides": {
+    "sha.js": "2.4.12"
+  }
 }
