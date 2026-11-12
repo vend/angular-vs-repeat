@@ -81,6 +81,7 @@
     "http-proxy-agent": "2.1.0",
     "get-func-name": "2.0.1",
     "braces": "3.0.3",
-    "engine.io": "3.6.0"
+    "engine.io": "3.6.0",
+    "ansi-regex@3": "5.0.1"
   }
 }
