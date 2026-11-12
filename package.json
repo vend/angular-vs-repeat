@@ -91,6 +91,7 @@
     "debug@<2.6.9": "2.6.9",
     "tmp": "0.2.6",
     "minimatch": "3.1.5",
-    "socket.io-parser": "~3.3.6"
+    "socket.io-parser": "~3.3.6",
+    "acorn@<5.7.4": "5.7.4"
   }
 }
