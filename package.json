@@ -59,6 +59,7 @@
     "https-proxy-agent": "2.2.4",
     "elliptic": "6.6.1",
     "lodash": "4.18.0",
-    "fsevents": "1.2.13"
+    "fsevents": "1.2.13",
+    "cipher-base": "1.0.5"
   }
 }
