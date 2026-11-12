@@ -65,6 +65,7 @@
     "semver": "6.3.1",
     "axios": "1.16.0",
     "pathval": "1.1.1",
-    "decode-uri-component": "0.5.1"
+    "decode-uri-component": "0.5.1",
+    "js-yaml": "4.3.1"
   }
 }
