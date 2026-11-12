@@ -82,6 +82,7 @@
     "get-func-name": "2.0.1",
     "braces": "3.0.3",
     "engine.io": "3.6.0",
-    "ansi-regex@3": "5.0.1"
+    "ansi-regex@3": "5.0.1",
+    "async@2": "2.6.4"
   }
 }
