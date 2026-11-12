@@ -79,6 +79,7 @@
     "follow-redirects": "1.14.7",
     "browserslist": "4.28.7",
     "http-proxy-agent": "2.1.0",
-    "get-func-name": "2.0.1"
+    "get-func-name": "2.0.1",
+    "braces": "3.0.3"
   }
 }
